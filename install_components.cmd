@@ -6,8 +6,8 @@ wget https://github.com/uuksu/7z.NET/raw/master/7z.NET/7za.exe
 7za x msys2-base-i686-20200517.tar
 sed -i 's/Required DatabaseOptional/Never/' msys32/etc/pacman.conf
 bash -lic "pacman -Syu --noconfirm"
-taskkill /im dirmngr.exe 2>nul
-taskkill /im gpg-agent.exe 2>nul
+taskkill /im dirmngr.exe /f 2>nul
+taskkill /im gpg-agent.exe /f 2>nul
 bash -lic "pacman -Syu --noconfirm"
 bash -lic "pacman -S diffutils patch git --noconfirm"
 cmd /c openssl-build\openssl.cmd
