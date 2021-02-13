@@ -1,6 +1,6 @@
 cd "%~dp0"
 cd ..
-set PATH=%cd%\msys32\usr\bin;%PATH%
+set PATH=%cd%\msys64\usr\bin;%PATH%
 for /f %%i in ('git ls-remote --tags https://github.com/openssl/openssl ^| grep -E 'OpenSSL_[0-9]_[0-9]_[0-9][a-z]' ^| cut -d/ -f3 ^| tr -d "^{}" ^| cut -d_ -f2-4') do set var=%%i
 curl -O https://slproweb.com/download/Win32OpenSSL-%var%.exe
 openssl-build\innounp.exe -x Win32OpenSSL-%var%.exe
