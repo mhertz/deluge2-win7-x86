@@ -5,7 +5,6 @@ for /f %%i in ('git ls-remote --tags https://github.com/python/cpython ^| grep -
 mkdir python & curl -L https://www.python.org/ftp/python/%var2%/python-%var2%-embed-win32.zip | bsdtar xf - -C python
 sed -i 's/#import/import/' python/python*._pth
 curl https://bootstrap.pypa.io/get-pip.py | python\python.exe
-python\Scripts\pip install setuptools==52.0.0
 for /f %%i in ('dir /b deluge-build\pycairo-*-win32.whl') do python\Scripts\pip.exe install deluge-build\%%i
 for /f %%i in ('dir /b deluge-build\PyGObject-*-win32.whl') do python\Scripts\pip.exe install deluge-build\%%i
 python\Scripts\pip install pygeoip
