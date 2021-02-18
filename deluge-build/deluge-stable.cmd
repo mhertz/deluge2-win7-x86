@@ -1,7 +1,7 @@
 cd "%~dp0"
 cd..
 set PATH=%cd%\msys64\usr\bin;%PATH%
-for /f %%i in ('git ls-remote --tags https://github.com/python/cpython ^| grep -E 'v3.8.[0-9]$' ^| cut -d/ -f3 ^| tr -d "^{}" ^| tr -d v') do set var2=%%i
+for /f %%i in ('git ls-remote --tags https://github.com/python/cpython ^| grep -E 'v3\.8\.[0-9]$' ^| cut -d/ -f3 ^| tr -d "^{}" ^| tr -d v') do set var2=%%i
 mkdir python & curl -L https://www.python.org/ftp/python/%var2%/python-%var2%-embed-win32.zip | bsdtar xf - -C python
 sed -i 's/#import/import/' python/python*._pth
 curl https://bootstrap.pypa.io/get-pip.py | python\python.exe
