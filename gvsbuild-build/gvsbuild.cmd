@@ -12,9 +12,15 @@ set VSCMD_DEBUG=1
 for /f %%i in ('git ls-remote --tags https://github.com/python/cpython ^| grep -E 'v3.8.[0-9]$' ^| cut -d/ -f3 ^| tr -d "^{}" ^| tr -d v') do set var2=%%i
 for /f %%i in ('echo %var2% ^| cut -d. -f1-2 ^| tr -d .') do set PYTHONVER=%%i
 mkdir python & curl -L https://www.nuget.org/api/v2/package/pythonx86/%var2% | bsdtar xf - -C python --include tools --strip-components 1
+%MSYSPATH%\echo -e Lib\nDLLs\nimport site >> python\python%PYTHONVER%._pth
 curl https://bootstrap.pypa.io/get-pip.py | python\python.exe
 git clone https://github.com/wingtk/gvsbuild gtk-build\gvsbuild
 pushd gtk-build\gvsbuild
+for /f %%a in ('grep "dir_part = 'meson" gvsbuild\tools.py ^| cut -d^"^'^" -f2') do %MSYSPATH%\echo %BUILD_DIR%/tools/%%a >> ..\..\python\python%PYTHONVER%._pth
+%MSYSPATH%\echo %BUILD_DIR%/build/Win32/release/adwaita-icon-theme/win32 >> ..\..\python\python%PYTHONVER%._pth
+%MSYSPATH%\echo %BUILD_DIR%/build/Win32/release/librsvg/win32 >> ..\..\python\python%PYTHONVER%._pth
+%MSYSPATH%\echo %BUILD_DIR%/build/Win32/release/libcroco/win32 >> ..\..\python\python%PYTHONVER%._pth
+sed -i 's.\\\./.g' ..\..\python\python%PYTHONVER%._pth
 copy "%~dp0win32.patch" patches\gtk3-24
 sed -i 's/gtk3_24(Tarball/gtk3_24(GitRepo/' gvsbuild\projects.py
 sed -i "/prj_dir='gtk3-24',/{n;N;d}" gvsbuild\projects.py
@@ -27,7 +33,7 @@ rd /s /q %DOWNLOAD_DIR%\git-exp\gtk3
 rd /s /q %DOWNLOAD_DIR%\git-exp\gtk3
 del %DOWNLOAD_DIR%\git-exp\gtk3.hash
 del %DOWNLOAD_DIR%\git\gtk3-*
-python -E build.py -d build --gtk3-ver=3.24 --archives-download-dir=%DOWNLOAD_DIR% --build-dir="%BUILD_DIR%" --msys-dir="%MSYSPATH:~1,-9%" --vs-ver=%VS_VER% --platform=x86 --vs-install-path="%MSVC_DIR%" --python-dir="%PYTHON_PATH%" -k --enable-gi --py-wheel --python-ver=%var2% enchant gtk3-full pycairo pygobject lz4 --skip gtksourceview3,emeus,clutter --capture-out --print-out
+python build.py -d build --gtk3-ver=3.24 --archives-download-dir=%DOWNLOAD_DIR% --build-dir="%BUILD_DIR%" --msys-dir="%MSYSPATH:~1,-9%" --vs-ver=%VS_VER% --platform=x86 --vs-install-path="%MSVC_DIR%" --python-dir="%PYTHON_PATH%" -k --enable-gi --py-wheel --python-ver=%var2% enchant gtk3-full pycairo pygobject lz4 --skip gtksourceview3,emeus,clutter --capture-out --print-out
 popd
 rd /s /q python
 rd /s /q python
