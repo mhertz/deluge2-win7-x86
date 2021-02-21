@@ -10,6 +10,7 @@ mkdir boost & curl -L https://dl.bintray.com/boostorg/release/1.66.0/source/boos
 git clone https://github.com/arvidn/libtorrent -b RC_1_1 lt
 for /f %%i in ('git ls-remote --tags https://github.com/python/cpython ^| grep -E 'v3.8.[0-9]$' ^| cut -d/ -f3 ^| tr -d "^{}" ^| tr -d v') do set var2=%%i
 for /f %%i in ('echo %var2% ^| cut -d. -f1-2 ^| tr -d .') do set PYTHONVER=%%i
+for /f %%i in ('echo %var2% ^| cut -d. -f1-2') do set PYTHONVER2=%%i
 mkdir python & curl -L https://www.nuget.org/api/v2/package/pythonx86/%var2% | bsdtar xf - -C python --include tools --strip-components 1
 msys64\usr\bin\echo -e "Lib\nDLLs\nimport site" >> python\python%PYTHONVER%._pth
 patch --binary boost/libs/python/src/converter/builtin_converters.cpp < "%~dp01.1-builtin_converters.patch"
