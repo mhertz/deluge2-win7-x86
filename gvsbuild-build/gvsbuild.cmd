@@ -2,13 +2,13 @@ cd "%~dp0"
 cd ..
 set DOWNLOAD_DIR="%cd%\gtk-cache"
 set BUILD_DIR="%cd%\gtk-build"
-set MSVC_DIR="%cd%\msvc"
 set PYTHON_PATH="%cd%\python"
 set MSYSPATH="%cd%\msys64\usr\bin"
 set PATH=%PYTHON_PATH%;%PYTHON_PATH%\Scripts;%cd%\gtk-build\gtk\x86\release\bin;%MSYSPATH%;%PATH%
 set platform=x86
 set VS_VER=16
 set VSCMD_DEBUG=1
+for /f %%i in ('"%programfiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -version [16.0^,17.0^) -prerelease -products * -property installationPath') do set MSVC_DIR="%%i"
 for /f %%i in ('git ls-remote --tags https://github.com/python/cpython ^| grep -E 'v3.8.[0-9]$' ^| cut -d/ -f3 ^| tr -d "^{}" ^| tr -d v') do set var2=%%i
 for /f %%i in ('echo %var2% ^| cut -d. -f1-2 ^| tr -d .') do set PYTHONVER=%%i
 mkdir python & curl -L https://www.nuget.org/api/v2/package/pythonx86/%var2% | bsdtar xf - -C python --include tools --strip-components 1
